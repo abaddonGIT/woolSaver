@@ -1,0 +1,23 @@
+.wool_save {
+	display: block; 
+	position: absolute;
+	right: 54px;
+	top: 10px;
+	z-index: 24;
+}
+
+.save_red {
+	right: 74px;
+}
+
+.wool_redactor {
+	right: 0;
+	position: absolute;
+	top: 7px;
+	z-index: 25;
+}
+
+.wool_redactor a {
+	vertical-align: -2px;
+	margin: 0 2px;
+}
