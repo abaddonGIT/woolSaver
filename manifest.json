@@ -24,7 +24,7 @@
 		"img/close.png"
 	],
 	"content_scripts": [{
-		"matches":["http://vk.com/*"],
+		"matches":["http://vk.com/*"], 
 		"css":["css/style.css"],
 		"js":["js/libs/jquery-2.0.3.js","js/base.js"]
 	}]
