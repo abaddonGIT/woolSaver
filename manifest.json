@@ -4,7 +4,7 @@
 	"name":"WoolSaver",
 	"author":"Michael Goriachkin (Abaddon)",
 	"description":"Позовляет скачивать музыку в контакте. Так же имеется возможность переменовать композицию перед скачиванием.",
-	//то что на виду
+	
 	"browser_action": {
 		"default_icon":"img/ikon.png",
 		"default_title":"Работает шерсть!"
@@ -13,11 +13,11 @@
     	"48":"img/ikon_48.png",
     	"128":"img/ikon_128.png"
   	},
-	//разрешаем библиотечки
+	
 	"permissions": [
 		"webRequest","http://vk.com/*"
 	],
-	//разрешенные ресурсы
+	
 	"web_accessible_resources":[
 		"img/save.png",
 		"img/save_r.png",
