@@ -29,8 +29,8 @@ var Audio = function () {
 		D.on('click', '.save_red', function () {
 			var el = $(this), title = el.attr('download'), link = el.attr('href');
 
-			el.before('<div class="wool_redactor"><a href="' + link + '" download="' + title + '" title="Сохранить" style="display: inline-block;" class="wool_save_link"><img src="chrome-extension://hkmpembcgoeepadkpecmelhdmegjleig/img/save.png" alt=""/></a>' + 
-				'<a href="#" title="Отмена" style="display: inline-block;" class="wool_close_redactor"><img src="chrome-extension://hkmpembcgoeepadkpecmelhdmegjleig/img/close.png" alt=""/></a>' +
+			el.before('<div class="wool_redactor"><a href="' + link + '" download="' + title + '" title="Сохранить" style="display: inline-block;" class="wool_save_link"><img src="chrome-extension://nlooajinbmkpcmbglleejnkapkopnmga/img/save.png" alt=""/></a>' + 
+				'<a href="#" title="Отмена" style="display: inline-block;" class="wool_close_redactor"><img src="chrome-extension://nlooajinbmkpcmbglleejnkapkopnmga/img/close.png" alt=""/></a>' +
 				'<input type="text" value="' + title + '"/ style="display: inline-block;"></div>');
 
 			return false;
@@ -53,12 +53,11 @@ var Audio = function () {
 	};
 
 	this.scrollingPage = function () {
-		var	els = D.find(c.audio_teg).not('.' + c.mark),  locCount = els.length;
+		var	els = D.find(c.audio_teg).not('#audio_global, .' + c.mark),  locCount = els.length;
 
-		if (count !== locCount) {
+		if (locCount !== 0) {
 			this.addSave(els);
 			els.addClass(c.mark);
-			count = locCount;
 		}	
 		
 	};
@@ -69,10 +68,11 @@ var Audio = function () {
 
 		while (count--) {
 			var el = $(els[count]);
-
-			link = el.find('input[type=hidden]').val();
-			title = el.find(c.title_class).text();
-			el.find(c.wrap_class).after('<a href="' + link + '" download="' + title + '" title="Изменить название и сохранить" class="wool_save save_red"><img src="chrome-extension://hkmpembcgoeepadkpecmelhdmegjleig/img/save_r.png" alt=""/></a><a href="' + link + '" download="' + title + '" title="Сохранить" class="wool_save"><img src="chrome-extension://hkmpembcgoeepadkpecmelhdmegjleig/img/save.png" alt=""/></a>');
+				link = el.find('input[type=hidden]').val().split(',');
+				//console.log(el.find('input[type=hidden]'));
+				title = el.find(c.title_class).text();
+				el.find(c.wrap_class).after('<a href="' + link[0] + '" download="' + title + '" title="Изменить название и сохранить" class="wool_save save_red"><img src="chrome-extension://nlooajinbmkpcmbglleejnkapkopnmga/img/save_r.png" alt=""/></a><a href="' + link[0] + '" download="' + title + '" title="Сохранить" class="wool_save"><img src="chrome-extension://nlooajinbmkpcmbglleejnkapkopnmga/img/save.png" alt=""/></a>');
+			
 		}
 	};
 };
