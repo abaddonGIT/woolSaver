@@ -2,6 +2,8 @@
 	"manifest_version": 2,
 	"version": "1.0",
 	"name":"WoolSaver",
+	"author":"Michael Goriachkin (Abaddon)",
+	"description":"Позовляет скачивать музыку в контакте. Так же имеется возможность переменовать композицию перед скачиванием.",
 	//то что на виду
 	"browser_action": {
 		"default_icon":"img/ikon.png",
