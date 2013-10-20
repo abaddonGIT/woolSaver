@@ -21,3 +21,16 @@
 	vertical-align: -2px;
 	margin: 0 2px;
 }
+
+.wool_save_link {
+	display: block;
+	width: 14px;
+	height: 15px;
+	background: url(../img/save.png) no-repeat;
+}
+
+.save_all {
+	position: fixed;
+	top: 100px;
+	right: 20px;
+}
