@@ -10,7 +10,7 @@ var Audio = function () {
         'audio_teg': '.audio',
         'mark': 'wool_mark',
         'wrap_class': '.area',
-        'title_class': '.title',
+        'title_class': '.title_wrap',
         'id': "ebhpmjgcmoinfmapbmhikeibmaajbikd",
         'interval': 400
     };
@@ -26,6 +26,7 @@ var Audio = function () {
     }
 
     this.data = {};
+    this.linksArray = [];
     this.location = '';
 
     var c = this.config, count = 0, t = this.tpl;
@@ -89,15 +90,15 @@ var Audio = function () {
             while (ln--) {
                 var downloadFileHyperLink = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
                 downloadFileHyperLink.href = $(audio[ln]).attr('href');
-                downloadFileHyperLink.download = $(audio[ln]).attr('download');           
-            
+                downloadFileHyperLink.download = $(audio[ln]).attr('download');
+
                 var event = document.createEvent("MouseEvents");
                 event.initMouseEvent(
 				    "click", true, false, self, 0, 0, 0, 0, 0
-				    ,false, false, false, false, 0, null
+				    , false, false, false, false, 0, null
 			    );
 
-                downloadFileHyperLink.dispatchEvent(event);        
+                downloadFileHyperLink.dispatchEvent(event);
             }
         },
         redName: function () {
@@ -139,7 +140,7 @@ var Audio = function () {
         var count = els.length, link = '', title = '', tpl = '';
 
         while (count--) {
-            var el = $(els[count]);
+            var el = $(els[count]), id = el.attr('id');
             link = el.find('input[type=hidden]').val().split(',');
             title = el.find(c.title_class).text();
 
@@ -148,10 +149,18 @@ var Audio = function () {
                 'link': link[0],
                 'title': title
             };
+
+            this.linksArray.push(this.data);
+
             tpl = this.parseTemplate(this.data, t.save_link);
 
             el.find(c.wrap_class).after(tpl);
 
+            console.log(id);
+
+            chrome.extension.sendRequest({ action: 'start' }, function (response) {
+                console.log('Start action sent');
+            });
         }
     };
 

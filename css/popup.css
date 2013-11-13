@@ -1,0 +1,27 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#wrapper {
+    background-color: #F0F1F2;
+    padding: 10px;
+    min-width: 300px;
+}
+
+.check-action {
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px 10px 10px 0;    
+    color: #2B587A;
+    cursor: pointer;
+}
+
+#checkboc-list {
+    background-color: #f2f3f4;
+    border: 1px solid #808080;
+    border-radius: 4px;
+    padding: 5px;
+    max-height: 200px;
+    min-height: 100px;
+}
