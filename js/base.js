@@ -27,6 +27,7 @@ var Audio = function () {
 
     this.data = {};
     this.linksArray = [];
+    this.location = null;
     this.location = '';
 
     var c = this.config, count = 0, t = this.tpl;
@@ -40,6 +41,11 @@ var Audio = function () {
         $('body').append(this.tpl.downLoadAll);
         //нахождение элементов на странице
         setInterval(function () {
+            //проверка ттраницы на которой находимся
+            if (A.location !== w.location.href) {
+                console.log('другая страница!');
+                A.location = w.location.href;
+            }
             A.scrollingPage();
         }, c.interval);
     };
