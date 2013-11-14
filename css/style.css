@@ -38,7 +38,7 @@
 #wrapper-checkbox {
     background-color: #F0F1F2;
     padding: 10px;
-    min-width: 300px;
+    width: 200px;
     position: fixed;
     top: 100px;
     right: 10px;

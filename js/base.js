@@ -26,7 +26,7 @@ var Audio = function () {
                             '<div data-action="checkAll" class="check-action">Выделить все</div>' +
                             '<div data-action="offAll" class="check-action">Снять выделение</div>' +
                                 '<div id="checkboc-list">' +
-
+                                    '{{data.wrapper}}' +
                                 '</div>' +
                             '<div id="checkbox-list-action">' +
                                 '<div data-action="saveAll" class="check-action">Сохранить отмеченные композиции</div>' +
@@ -47,8 +47,6 @@ var Audio = function () {
         this.Mark();
         //подключаем события
         this.addUIEvent();
-        //добавляем кнопку скачать все
-        $('body').append(this.tpl.downLoadAll);
         //нахождение элементов на странице
         setInterval(function () {
             A.scrollingPage();
@@ -148,12 +146,13 @@ var Audio = function () {
 
     //добавляем ссылку на скачивание
     this.addSave = function (els) {
-        var count = els.length, link = '', title = '', tpl = '';
+        var count = els.length, link = '', title = '', tpl = '', panel = $('#checkboc-list'), inputs = '';
 
         //отслеживаем переход на другую страницу
         if (this.location !== w.location.href) {
             this.location = w.location.href;
             this.linksArray = {};
+            panel.html('');
         }
 
         for (var i = 0; i < count; i++) {
@@ -169,8 +168,8 @@ var Audio = function () {
             };
 
             tpl = this.parseTemplate(this.data, t.save_link);
-            //добавляем в панельку
-            console.log(d.getElementById('#checkboc-list'));
+            //формируем списочки
+            inputs += this.parseTemplate(this.data, t.listItem);
 
             el.find(c.wrap_class).after(tpl);
 
@@ -178,6 +177,14 @@ var Audio = function () {
             if (this.linksArray[id] === undefined) {
                 this.linksArray[id] = this.data;
             }
+        }
+
+        //добавляем панельку
+        if (panel[0] === undefined) {
+            //добавляем кнопку скачать все
+            $('body').append(this.parseTemplate({ "wrapper": inputs }, this.tpl.downLoadAll));
+        } else {
+            panel.append(inputs);
         }
         /*
         chrome.extension.sendRequest({ links: this.linksArray }, function (response) {

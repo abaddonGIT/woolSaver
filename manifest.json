@@ -7,8 +7,7 @@
 	
 	"browser_action": {
 		"default_icon":"img/ikon.png",
-		"default_title":"Работает шерсть!",
-        "default_popup":"pages/popup.html"
+		"default_title":"Работает шерсть!"
 	},
 	"icons": {
     	"48":"img/ikon_48.png",
@@ -16,16 +15,8 @@
   	},
 	
 	"permissions": [
-		"webRequest",
-        "storage",
-        "tabs",
-        "activeTab",
         "http://vk.com/*"
 	],
-
-    "background": {
-        "page":"pages/background.html"
-    },
 
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	
