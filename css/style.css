@@ -34,3 +34,46 @@
 	top: 100px;
 	right: 20px;
 }
+
+#wrapper-checkbox {
+    background-color: #F0F1F2;
+    padding: 10px;
+    min-width: 300px;
+    position: fixed;
+    top: 100px;
+    right: 10px;
+}
+
+.check-action {
+    display: inline-block;
+    vertical-align: top;
+    margin: 10px 10px 10px 0;    
+    color: #2B587A;
+    cursor: pointer;
+}
+
+#checkboc-list {
+    background-color: #f2f3f4;
+    border: 1px solid #808080;
+    border-radius: 4px;
+    padding: 5px;
+    max-height: 200px;
+    min-height: 100px;
+    overflow-y: auto;
+}
+
+#checkboc-list input {
+    display: block;
+    margin: 3px 5px 3px 0;
+    float: left;
+}
+
+#checkboc-list label {
+    width: 100%;
+    display: block;
+    margin: 5px 0;
+}
+
+.clear {
+    clear: both;
+}

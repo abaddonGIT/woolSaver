@@ -22,11 +22,21 @@ var Audio = function () {
         'redactor_link': '<div class="wool_redactor"><a href="{{data.link}}" download="{{data.title}}" title="Сохранить" style="display: inline-block;" class="wool_save_link"><img src="chrome-extension://{{data.id}}/img/save.png" alt=""/></a>' +
 				'<a href="#" title="Отмена" style="display: inline-block;" class="wool_close_redactor"><img src="chrome-extension://{{data.id}}/img/close.png" alt=""/></a>' +
 				'<input type="text" value="{{data.title}}"/ style="display: inline-block;"></div>',
-        'downLoadAll': '<div class="save_all"><a id="downLoadAll">Сохранить все аудио записи на странице</a></div>'
+        'downLoadAll': '<div id="wrapper-checkbox">' +
+                            '<div data-action="checkAll" class="check-action">Выделить все</div>' +
+                            '<div data-action="offAll" class="check-action">Снять выделение</div>' +
+                                '<div id="checkboc-list">' +
+
+                                '</div>' +
+                            '<div id="checkbox-list-action">' +
+                                '<div data-action="saveAll" class="check-action">Сохранить отмеченные композиции</div>' +
+                            '</div>' +
+                       '</div>',
+        'listItem': '<label><input type="checkbox" name="audio" data-link="{{data.link}}" data-name="{{data.title}}"/>{{data.title}}</label><div class="clear"></div>'
     }
 
     this.data = {};
-    this.linksArray = [];
+    this.linksArray = {};
     this.location = null;
     this.location = '';
 
@@ -41,11 +51,6 @@ var Audio = function () {
         $('body').append(this.tpl.downLoadAll);
         //нахождение элементов на странице
         setInterval(function () {
-            //проверка ттраницы на которой находимся
-            if (A.location !== w.location.href) {
-                console.log('другая страница!');
-                A.location = w.location.href;
-            }
             A.scrollingPage();
         }, c.interval);
     };
@@ -145,29 +150,40 @@ var Audio = function () {
     this.addSave = function (els) {
         var count = els.length, link = '', title = '', tpl = '';
 
-        while (count--) {
-            var el = $(els[count]), id = el.attr('id');
+        //отслеживаем переход на другую страницу
+        if (this.location !== w.location.href) {
+            this.location = w.location.href;
+            this.linksArray = {};
+        }
+
+        for (var i = 0; i < count; i++) {
+            var el = $(els[i]), id = el.attr('id');
             link = el.find('input[type=hidden]').val().split(',');
             title = el.find(c.title_class).text();
 
             this.data = {
                 'id': c.id,
                 'link': link[0],
-                'title': title
+                'title': title,
+                'elId': id
             };
 
-            this.linksArray.push(this.data);
-
             tpl = this.parseTemplate(this.data, t.save_link);
+            //добавляем в панельку
+            console.log(d.getElementById('#checkboc-list'));
 
             el.find(c.wrap_class).after(tpl);
 
-            console.log(id);
-
-            chrome.extension.sendRequest({ action: 'start' }, function (response) {
-                console.log('Start action sent');
-            });
+            //заполняем массив инфой о ссылках
+            if (this.linksArray[id] === undefined) {
+                this.linksArray[id] = this.data;
+            }
         }
+        /*
+        chrome.extension.sendRequest({ links: this.linksArray }, function (response) {
+        console.log('Start action sent');
+        });*/
+        //console.log(this.linksArray);
     };
 
     var A = this;
