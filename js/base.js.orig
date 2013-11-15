@@ -4,6 +4,21 @@
  * @version 1.0.0
  * ***************************************************/
 var Audio = function () {
+<<<<<<< HEAD
+	var d = document, w = window, D = $(d), W = $(w);
+	//Конфиг
+	this.config = {
+		'audio_teg': '.audio',
+		'mark': 'wool_mark',
+		'wrap_class': '.area',
+		'title_class': '.title',
+		'id': "pbkbgcklngmbogkmfhhnlelbjbepbnin",
+		'interval': 400
+	};
+	//Шаблоны для встраеваемых элементов
+	this.tpl = {
+		'save_link': '<a href="{{data.link}}" download="{{data.title}}" title="Изменить название и сохранить" class="wool_save save_red">' + 
+=======
     var d = document, w = window, D = $(d), W = $(w);
     //Конфиг
     this.config = {
@@ -17,6 +32,7 @@ var Audio = function () {
     //Шаблоны для встраеваемых элементов
     this.tpl = {
         'save_link': '<a href="{{data.link}}" download="{{data.title}}" title="Изменить название и сохранить" class="wool_save save_red">' +
+>>>>>>> a6f75e44eddd2675f075dc99c3027f5b7936d2a6
 					'<img src="chrome-extension://{{data.id}}/img/save_r.png" alt=""/></a>' +
 					'<a href="{{data.link}}" download="{{data.title}}" title="Сохранить" class="wool_save"><img src="chrome-extension://{{data.id}}/img/save.png" alt=""/></a>',
         'redactor_link': '<div class="wool_redactor"><a href="{{data.link}}" download="{{data.title}}" title="Сохранить" style="display: inline-block;" class="wool_save_link"><img src="chrome-extension://{{data.id}}/img/save.png" alt=""/></a>' +
