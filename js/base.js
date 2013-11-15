@@ -11,7 +11,7 @@ var Audio = function () {
 		'mark': 'wool_mark',
 		'wrap_class': '.area',
 		'title_class': '.title',
-		'id': "nlooajinbmkpcmbglleejnkapkopnmga",
+		'id': "pbkbgcklngmbogkmfhhnlelbjbepbnin",
 		'interval': 400
 	};
 	//Шаблоны для встраеваемых элементов
