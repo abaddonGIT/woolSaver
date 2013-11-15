@@ -29,51 +29,30 @@
 	background: url(../img/save.png) no-repeat;
 }
 
-.save_all {
-	position: fixed;
-	top: 100px;
-	right: 20px;
-}
-
 #wrapper-checkbox {
     background-color: #F0F1F2;
-    padding: 10px;
-    width: 200px;
+    padding: 0 10px 0 10px;
+    width: 150px;
     position: fixed;
-    top: 100px;
+    top: 0px;
     right: 10px;
+    text-align: center;
 }
 
 .check-action {
-    display: inline-block;
-    vertical-align: top;
     margin: 10px 10px 10px 0;    
     color: #2B587A;
     cursor: pointer;
-}
-
-#checkboc-list {
-    background-color: #f2f3f4;
-    border: 1px solid #808080;
-    border-radius: 4px;
-    padding: 5px;
-    max-height: 200px;
-    min-height: 100px;
-    overflow-y: auto;
-}
-
-#checkboc-list input {
-    display: block;
-    margin: 3px 5px 3px 0;
-    float: left;
-}
-
-#checkboc-list label {
-    width: 100%;
-    display: block;
-    margin: 5px 0;
+    z-index: 25;
+    text-align: center;
 }
 
 .clear {
     clear: both;
+}
+
+.wool-input {
+    position: absolute;
+    right: 92px;
+    top: 8px;
 }

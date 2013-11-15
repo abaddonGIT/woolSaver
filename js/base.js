@@ -23,16 +23,12 @@ var Audio = function () {
 				'<a href="#" title="Отмена" style="display: inline-block;" class="wool_close_redactor"><img src="chrome-extension://{{data.id}}/img/close.png" alt=""/></a>' +
 				'<input type="text" value="{{data.title}}"/ style="display: inline-block;"></div>',
         'downLoadAll': '<div id="wrapper-checkbox">' +
-                            '<div data-action="checkAll" class="check-action">Выделить все</div>' +
-                            '<div data-action="offAll" class="check-action">Снять выделение</div>' +
-                                '<div id="checkboc-list">' +
-                                    '{{data.wrapper}}' +
-                                '</div>' +
-                            '<div id="checkbox-list-action">' +
-                                '<div data-action="saveAll" class="check-action">Сохранить отмеченные композиции</div>' +
-                            '</div>' +
+                            '<div data-action="checkAll" class="check-action btn">Выделить все</div>' +
+                            '<div data-action="offAll" class="check-action btn">Снять выделение</div>' +
+                            '<div data-action="saveAll" class="check-action btn">Сохранить отмеченные композиции</div>' +
+                            '<div id="wrapper-checkbox-footer"><div class="check-action" data-action="toongle-window">Свернуть</div></div>' +
                        '</div>',
-        'listItem': '<label><input type="checkbox" name="audio" data-link="{{data.link}}" data-name="{{data.title}}"/>{{data.title}}</label><div class="clear"></div>'
+        'listItem': '<input class="wool-input" type="checkbox" name="audio" data-link="{{data.link}}" data-name="{{data.title}}"/>'
     }
 
     this.data = {};
@@ -47,6 +43,8 @@ var Audio = function () {
         this.Mark();
         //подключаем события
         this.addUIEvent();
+        //добавлени управляющих кнопок
+        $('body').append(this.tpl.downLoadAll);
         //нахождение элементов на странице
         setInterval(function () {
             A.scrollingPage();
@@ -87,28 +85,45 @@ var Audio = function () {
         D.on('click', '.wool_redactor .wool_save_link', function () {
             $(this).parents('.wool_redactor').remove();
         });
-        //Скачать все
-        D.on('click', '#downLoadAll', this.actions.downLoadAll);
+        //Действия в окошке
+        D.on('click', '.check-action', this.actions.checkboxListSave);
     };
 
     this.actions = {
-        downLoadAll: function () {
-            //Находим все аудио-элементы на странице
-            var audio = d.querySelectorAll('.wool_save'), ln = audio.length; //все элементы для скачивания
+        checkboxListSave: function () {
+            var el = $(this), action = el.data('action');
 
-            while (ln--) {
-                var downloadFileHyperLink = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
-                downloadFileHyperLink.href = $(audio[ln]).attr('href');
-                downloadFileHyperLink.download = $(audio[ln]).attr('download');
+            switch (action) {
+                case 'checkAll':
+                    $('.wool-input').prop('checked', true);
+                    break;
+                case 'offAll':
+                    $('.wool-input').prop('checked', false);
+                    break;
+                case 'saveAll':
+                    var audio = $('.wool-input:checked'), ln = audio.length;
 
-                var event = document.createEvent("MouseEvents");
-                event.initMouseEvent(
-				    "click", true, false, self, 0, 0, 0, 0, 0
-				    , false, false, false, false, 0, null
-			    );
+                    if (ln === 0) {
+                        alert('Вы не выбрали не одной записи!');
+                    } else {
+                        while (ln--) {
+                            var downloadFileHyperLink = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
+                            downloadFileHyperLink.href = $(audio[ln]).data('link');
+                            downloadFileHyperLink.download = $(audio[ln]).data('name');
 
-                downloadFileHyperLink.dispatchEvent(event);
+                            var event = document.createEvent("MouseEvents");
+                            event.initMouseEvent(
+                                "click", true, false, self, 0, 0, 0, 0, 0
+                                , false, false, false, false, 0, null
+                            );
+
+                            downloadFileHyperLink.dispatchEvent(event);
+                        }
+                    }
+                    break;
             }
+
+            //return false;
         },
         redName: function () {
             var el = $(this), title = el.attr('download'), link = el.attr('href'), tpl = '';
@@ -148,12 +163,7 @@ var Audio = function () {
     this.addSave = function (els) {
         var count = els.length, link = '', title = '', tpl = '', panel = $('#checkboc-list'), inputs = '';
 
-        //отслеживаем переход на другую страницу
-        if (this.location !== w.location.href) {
-            this.location = w.location.href;
-            this.linksArray = {};
-            panel.html('');
-        }
+        
 
         for (var i = 0; i < count; i++) {
             var el = $(els[i]), id = el.attr('id');
@@ -168,29 +178,14 @@ var Audio = function () {
             };
 
             tpl = this.parseTemplate(this.data, t.save_link);
+            input = this.parseTemplate(this.data, t.listItem);
             //формируем списочки
-            inputs += this.parseTemplate(this.data, t.listItem);
+            //inputs += this.parseTemplate(this.data, t.listItem);
 
             el.find(c.wrap_class).after(tpl);
+            el.find(c.wrap_class).after(input);
 
-            //заполняем массив инфой о ссылках
-            if (this.linksArray[id] === undefined) {
-                this.linksArray[id] = this.data;
-            }
         }
-
-        //добавляем панельку
-        if (panel[0] === undefined) {
-            //добавляем кнопку скачать все
-            $('body').append(this.parseTemplate({ "wrapper": inputs }, this.tpl.downLoadAll));
-        } else {
-            panel.append(inputs);
-        }
-        /*
-        chrome.extension.sendRequest({ links: this.linksArray }, function (response) {
-        console.log('Start action sent');
-        });*/
-        //console.log(this.linksArray);
     };
 
     var A = this;
