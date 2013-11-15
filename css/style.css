@@ -30,13 +30,10 @@
 }
 
 #wrapper-checkbox {
-    background-color: #F0F1F2;
-    padding: 0 10px 0 10px;
-    width: 150px;
-    position: fixed;
-    top: 0px;
-    right: 10px;
-    text-align: center;
+    padding: 5px;
+    margin: 10px 0;
+    width: 108px;
+    background-color: #F7F7F7;
 }
 
 .check-action {
@@ -44,7 +41,6 @@
     color: #2B587A;
     cursor: pointer;
     z-index: 25;
-    text-align: center;
 }
 
 .clear {

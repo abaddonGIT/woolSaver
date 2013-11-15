@@ -11,6 +11,7 @@ var Audio = function () {
         'mark': 'wool_mark',
         'wrap_class': '.area',
         'title_class': '.title_wrap',
+        'sidebar': '#side_bar',
         'id': "ebhpmjgcmoinfmapbmhikeibmaajbikd",
         'interval': 400
     };
@@ -26,15 +27,11 @@ var Audio = function () {
                             '<div data-action="checkAll" class="check-action btn">Выделить все</div>' +
                             '<div data-action="offAll" class="check-action btn">Снять выделение</div>' +
                             '<div data-action="saveAll" class="check-action btn">Сохранить отмеченные композиции</div>' +
-                            '<div id="wrapper-checkbox-footer"><div class="check-action" data-action="toongle-window">Свернуть</div></div>' +
                        '</div>',
         'listItem': '<input class="wool-input" type="checkbox" name="audio" data-link="{{data.link}}" data-name="{{data.title}}"/>'
     }
 
     this.data = {};
-    this.linksArray = {};
-    this.location = null;
-    this.location = '';
 
     var c = this.config, count = 0, t = this.tpl;
 
@@ -44,7 +41,7 @@ var Audio = function () {
         //подключаем события
         this.addUIEvent();
         //добавлени управляющих кнопок
-        $('body').append(this.tpl.downLoadAll);
+        $(this.config.sidebar).find('ol').after(this.tpl.downLoadAll);
         //нахождение элементов на странице
         setInterval(function () {
             A.scrollingPage();
@@ -163,8 +160,6 @@ var Audio = function () {
     this.addSave = function (els) {
         var count = els.length, link = '', title = '', tpl = '', panel = $('#checkboc-list'), inputs = '';
 
-        
-
         for (var i = 0; i < count; i++) {
             var el = $(els[i]), id = el.attr('id');
             link = el.find('input[type=hidden]').val().split(',');
@@ -179,8 +174,6 @@ var Audio = function () {
 
             tpl = this.parseTemplate(this.data, t.save_link);
             input = this.parseTemplate(this.data, t.listItem);
-            //формируем списочки
-            //inputs += this.parseTemplate(this.data, t.listItem);
 
             el.find(c.wrap_class).after(tpl);
             el.find(c.wrap_class).after(input);
