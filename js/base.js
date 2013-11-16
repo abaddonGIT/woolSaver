@@ -36,6 +36,8 @@ var Audio = function () {
     var c = this.config, count = 0, t = this.tpl;
 
     this.init = function () {
+        //определяем высоту окна
+        this.windowHeight = d.documentElement.clientHeight;
         //Помечаем аудио элементы при загрузке страницы
         this.Mark();
         //подключаем события
@@ -46,6 +48,22 @@ var Audio = function () {
         setInterval(function () {
             A.scrollingPage();
         }, c.interval);
+        //кординаты левой колонки
+        this.rebuildLeftBar();
+    };
+    //вносим изменения в левую колонку
+    this.rebuildLeftBar = function () {
+        this.panel = d.querySelector('#side_bar');
+        this.minMenu = d.querySelector('#stl_side');
+        this.leftBlock = d.querySelector('#stl_left');
+
+        var br = this.panel.getBoundingClientRect();
+        this.panel.style.position = "fixed";
+        this.panel.style.top = '40px';
+        this.panel.style.left = br.left + 'px';
+        this.panel.style.zIndex = 25;
+
+        this.minMenu.style.zIndex = -1;
     };
     //при перезагрузке страницы
     this.Mark = function () {
@@ -84,6 +102,10 @@ var Audio = function () {
         });
         //Действия в окошке
         D.on('click', '.check-action', this.actions.checkboxListSave);
+        //Подстраиваем размещение панель при изменении размеров окна
+        w.onresize = function () {
+            A.panel.style.left = A.leftBlock.style.width;
+        }
     };
 
     this.actions = {
