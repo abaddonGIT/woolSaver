@@ -10,18 +10,18 @@ var Audio = function () {
         'audio_teg': '.audio',
         'mark': 'wool_mark',
         'wrap_class': '.area',
+        'new_play': '.play_new',
         'title_class': '.title_wrap',
         'sidebar': '#side_bar',
-        'id': "ebhpmjgcmoinfmapbmhikeibmaajbikd",
         'interval': 400
     };
     //Шаблоны для встраеваемых элементов
     this.tpl = {
         'save_link': '<a href="{{data.link}}" download="{{data.title}}" title="Изменить название и сохранить" class="wool_save save_red">' +
-					'<img src="chrome-extension://{{data.id}}/img/save_r.png" alt=""/></a>' +
-					'<a href="{{data.link}}" download="{{data.title}}" title="Сохранить" class="wool_save"><img src="chrome-extension://{{data.id}}/img/save.png" alt=""/></a>',
-        'redactor_link': '<div class="wool_redactor"><a href="{{data.link}}" download="{{data.title}}" title="Сохранить" style="display: inline-block;" class="wool_save_link"><img src="chrome-extension://{{data.id}}/img/save.png" alt=""/></a>' +
-				'<a href="#" title="Отмена" style="display: inline-block;" class="wool_close_redactor"><img src="chrome-extension://{{data.id}}/img/close.png" alt=""/></a>' +
+					'<img src="' + chrome.extension.getURL("img/save_r.png") + '" alt=""/></a>' +
+					'<a href="{{data.link}}" download="{{data.title}}" title="Сохранить" class="wool_save"><img src="' + chrome.extension.getURL("img/save.png") + '" alt=""/></a>',
+        'redactor_link': '<div class="wool_redactor"><a href="{{data.link}}" download="{{data.title}}" title="Сохранить" style="display: inline-block;" class="wool_save_link"><img src="' + chrome.extension.getURL("img/save.png") + '" alt=""/></a>' +
+				'<a href="#" title="Отмена" style="display: inline-block;" class="wool_close_redactor"><img src="' + chrome.extension.getURL("img/close.png") + '" alt=""/></a>' +
 				'<input type="text" value="{{data.title}}"/ style="display: inline-block;"></div>',
         'downLoadAll': '<div id="wrapper-checkbox">' +
                             '<div data-action="checkAll" class="check-action btn">Выделить все</div>' +
@@ -196,7 +196,7 @@ var Audio = function () {
 
             tpl = this.parseTemplate(this.data, t.save_link);
             input = this.parseTemplate(this.data, t.listItem);
-
+            
             el.find(c.wrap_class).after(tpl);
             el.find(c.wrap_class).after(input);
 
