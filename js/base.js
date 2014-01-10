@@ -140,8 +140,6 @@ var Audio = function () {
                     }
                     break;
             }
-
-            //return false;
         },
         redName: function () {
             var el = $(this), title = el.attr('download'), link = el.attr('href'), tpl = '';
@@ -172,8 +170,6 @@ var Audio = function () {
         var els = d.querySelectorAll(c.audio_teg + ':not(.' + c.mark + ')'), 
             locCount = els.length;
 
-            //console.log(els);
-
         if (locCount !== 0) {
             this.addSave(els);
             $(els).addClass(c.mark);
@@ -185,15 +181,15 @@ var Audio = function () {
         var count = els.length, link = '', title = '', tpl = '', panel = $('#checkboc-list'), inputs = '';
 
         for (var i = 0; i < count; i++) {
-            var el = $(els[i]), id = el.attr('id');
-            link = el.find('input[type=hidden]').val().split(',');
-            title = el.find(c.title_class).text();
+            var el = $(els[i]);
+
+            link = els[i].querySelector('input[type=hidden]').value.split(',');
+            title = els[i].querySelector(c.title_class).textContent;
 
             this.data = {
                 'id': c.id,
                 'link': link[0],
-                'title': title,
-                'elId': id
+                'title': title
             };
 
             tpl = this.parseTemplate(this.data, t.save_link);
@@ -202,6 +198,21 @@ var Audio = function () {
             el.find(c.wrap_class).after(tpl);
             el.find(c.wrap_class).after(input);
 
+        }
+    };
+    /*
+    * Ф-и для работы с dom-элементами
+    */
+    this.domAction = {
+        insertAfter: function (el, afterEl) {
+
+        },
+        createEl: function (html) {
+            var div = d.createElement('div');
+            div.innerHTML = html;
+            var el = div.childNodes[0];
+            div.removeChild(el);
+            return el;
         }
     };
 
