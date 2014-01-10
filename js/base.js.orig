@@ -12,8 +12,12 @@ var Audio = function () {
         'new_play': '.play_new',
         'title_class': '.title_wrap',
         'sidebar': '#side_bar',
+<<<<<<< HEAD
+        'interval': 400
+=======
         'id': chrome.runtime.id,
         'interval': 1000
+>>>>>>> 5e1fcc1091a0e38733e66b1b0f38c9bcc30f70bc
     };
     //Шаблоны для встраеваемых элементов
     this.tpl = {
