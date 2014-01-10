@@ -1,7 +1,6 @@
 /******************************************************
  * Copyright 2013 by Abaddon <abaddongit@gmail.com>
  * @author Abaddon <abaddongit@gmail.com>
- * @version 1.0.0
  * ***************************************************/
 var Audio = function () {
     var d = document, w = window, D = $(d), W = $(w);
@@ -12,8 +11,8 @@ var Audio = function () {
         'wrap_class': '.area',
         'title_class': '.title_wrap',
         'sidebar': '#side_bar',
-        'id': "ebhpmjgcmoinfmapbmhikeibmaajbikd",
-        'interval': 400
+        'id': chrome.runtime.id,
+        'interval': 1000
     };
     //Шаблоны для встраеваемых элементов
     this.tpl = {
@@ -59,7 +58,7 @@ var Audio = function () {
 
         var br = this.panel.getBoundingClientRect();
         this.panel.style.position = "fixed";
-        this.panel.style.top = '40px';
+        this.panel.style.top = '100px';
         this.panel.style.left = br.left + 'px';
         this.panel.style.zIndex = 25;
 
@@ -67,13 +66,13 @@ var Audio = function () {
     };
     //при перезагрузке страницы
     this.Mark = function () {
-        var els = D.find(c.audio_teg);
-        els.addClass(c.mark);
+        var els = d.querySelectorAll(c.audio_teg);
+        $(els).addClass(c.mark);
         this.addSave(els);
     };
 
     /*
-    * Расбирает шаблон
+    * Разбирает шаблон
     * @param {Object} объект данных для подстановки
     * @param {String} строка шаблона
     */
@@ -170,11 +169,14 @@ var Audio = function () {
     }
 
     this.scrollingPage = function () {
-        var els = D.find(c.audio_teg).not('#audio_global, .' + c.mark), locCount = els.length;
+        var els = d.querySelectorAll(c.audio_teg + ':not(.' + c.mark + ')'), 
+            locCount = els.length;
+
+            //console.log(els);
 
         if (locCount !== 0) {
             this.addSave(els);
-            els.addClass(c.mark);
+            $(els).addClass(c.mark);
         }
     };
 
