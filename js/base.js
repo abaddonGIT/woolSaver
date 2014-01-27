@@ -3,7 +3,7 @@
  * @author Abaddon <abaddongit@gmail.com>
  * ***************************************************/
 var Audio = function () {
-    var d = document, w = window, D = $(d), W = $(w);
+    var d = document, w = window;
     //Конфиг
     this.config = {
         'audio_teg': '.audio',
@@ -42,8 +42,8 @@ var Audio = function () {
         this.Mark();
         //подключаем события
         this.addUIEvent();
-        //добавлени управляющих кнопок
-        $(this.config.sidebar).find('ol').after(this.tpl.downLoadAll);
+        //добавлени управляющих кнопок childNodes
+        d.querySelector(this.config.sidebar + ' ol').appendChild(this.domAction.createEl(this.tpl.downLoadAll));
         //нахождение элементов на странице
         setInterval(function () {
             A.scrollingPage();
@@ -58,17 +58,13 @@ var Audio = function () {
         this.leftBlock = d.querySelector('#stl_left');
 
         var br = this.panel.getBoundingClientRect();
-        this.panel.style.position = "fixed";
-        this.panel.style.top = '100px';
-        this.panel.style.left = br.left + 'px';
-        this.panel.style.zIndex = 25;
-
+        this.panel.style.cssText += "position: fixed; top: 100px; left: " + br.left + 'px; z-index: 25;';
         this.minMenu.style.zIndex = -1;
     };
     //при перезагрузке страницы
     this.Mark = function () {
         var els = d.querySelectorAll(c.audio_teg);
-        $(els).addClass(c.mark);
+        this.domAction.addClass(els, c.mark);
         this.addSave(els);
     };
 
@@ -90,18 +86,42 @@ var Audio = function () {
     * Регистрирует события
     */
     this.addUIEvent = function () {
-        //редактирование названия перед сохранением
-        D.on('click', '.save_red', this.actions.redName);
-        //Закрытие окна редактирования
-        D.on('click', '.wool_redactor .wool_close_redactor', this.actions.redClose);
-        //смена названия
-        D.on('keyup', '.wool_redactor input', this.actions.changeName);
-        //Скачивание и закрытие окна редактирования
-        D.on('click', '.wool_redactor .wool_save_link', function () {
-            $(this).parents('.wool_redactor').remove();
-        });
-        //Действия в окошке
-        D.on('click', '.check-action', this.actions.checkboxListSave);
+        d.addEventListener('click', function (event) {
+            var e = event || w.event,
+                target = e.target,
+                parent = '';
+
+            parent = target.parentNode;
+            if (parent.tagName === "A") {
+                if (A.domAction.hasClass(parent, 'save_red')) {
+                    A.actions.redName(parent);
+                    e.preventDefault();
+                }
+
+                if (A.domAction.hasClass(parent, 'wool_close_redactor')) {
+                    A.actions.redClose(parent);
+                    e.preventDefault();
+                }
+
+                if (A.domAction.hasClass(parent, 'wool_save_link')) {
+                    $(parent).parents('.wool_redactor').remove();
+                }
+            }
+
+            if (target.tagName === "DIV" && A.domAction.hasClass(target, 'check-action')) {
+                A.actions.checkboxListSave(target);
+            }
+        }, false);
+
+        d.addEventListener('keyup', function (event) {
+            var e = event || w.event,
+                target = e.target,
+                parent = target.parentNode;
+
+            if (A.domAction.hasClass(parent, 'wool_redactor') && target.tagName === "INPUT") {
+                A.actions.changeName(target);
+            }
+        }, false);
         //Подстраиваем размещение панель при изменении размеров окна
         w.onresize = function () {
             A.panel.style.left = A.leftBlock.style.width;
@@ -109,26 +129,39 @@ var Audio = function () {
     };
 
     this.actions = {
-        checkboxListSave: function () {
-            var el = $(this), action = el.data('action');
+        checkboxListSave: function (el) {
+            var action = el.getAttribute('data-action');
 
             switch (action) {
                 case 'checkAll':
-                    $('.wool-input').prop('checked', true);
-                    break;
                 case 'offAll':
-                    $('.wool-input').prop('checked', false);
+                    var inputs = d.querySelectorAll('.wool-input'),
+                        ln = inputs.length;
+
+                    if (action === "checkAll") {
+                        while (ln--) {
+                            var loc = inputs[ln];
+                            loc.checked = true;
+                        }
+                    } else {
+                        while (ln--) {
+                            var loc = inputs[ln];
+                            loc.checked = false;
+                        }
+                    }
+
                     break;
                 case 'saveAll':
-                    var audio = $('.wool-input:checked'), ln = audio.length;
+                    var audio = d.querySelectorAll('.wool-input:checked'),
+                        ln = audio.length;
 
                     if (ln === 0) {
                         alert('Вы не выбрали не одной записи!');
                     } else {
                         while (ln--) {
                             var downloadFileHyperLink = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
-                            downloadFileHyperLink.href = $(audio[ln]).data('link');
-                            downloadFileHyperLink.download = $(audio[ln]).data('name');
+                            downloadFileHyperLink.href = audio[ln].getAttribute('data-link');
+                            downloadFileHyperLink.download = audio[ln].getAttribute('data-name');
 
                             var event = document.createEvent("MouseEvents");
                             event.initMouseEvent(
@@ -142,8 +175,8 @@ var Audio = function () {
                     break;
             }
         },
-        redName: function () {
-            var el = $(this), title = el.attr('download'), link = el.attr('href'), tpl = '';
+        redName: function (el) {
+            var title = el.getAttribute('download'), link = el.href, tpl = '';
             //данные
             A.data = {
                 'id': c.id,
@@ -152,53 +185,50 @@ var Audio = function () {
             };
 
             tpl = A.parseTemplate(A.data, t.redactor_link);
-            el.before(tpl);
-
+            el.parentNode.insertBefore(A.domAction.createEl(tpl), el);
             return false;
         },
-        redClose: function () {
-            $(this).parents('.wool_redactor').remove();
+        redClose: function (el) {
+            el.parentNode.parentNode.removeChild(el.parentNode);
             return false;
         },
-        changeName: function () {
-            var par = $(this).parents('.wool_redactor'), saveLink = par.find('.wool_save_link');
-
-            saveLink.attr('download', $(this).val());
+        changeName: function (el) {
+            var par = el.parentNode, saveLink = par.querySelector('.wool_save_link');
+            saveLink.setAttribute('download', el.value);
         }
     }
 
     this.scrollingPage = function () {
-        var els = d.querySelectorAll(c.audio_teg + ':not(.' + c.mark + ')'), 
+        var els = d.querySelectorAll(c.audio_teg + ':not(.' + c.mark + '):not(#audio_global)'),
             locCount = els.length;
 
         if (locCount !== 0) {
             this.addSave(els);
-            $(els).addClass(c.mark);
+            this.domAction.addClass(els, c.mark);
         }
     };
 
     //добавляем ссылку на скачивание
     this.addSave = function (els) {
-        var count = els.length, link = '', title = '', tpl = '', panel = $('#checkboc-list'), inputs = '';
+        var count = els.length, link = '', title = '', tpl = '', inputs = '', point = null;
 
         for (var i = 0; i < count; i++) {
-            var el = $(els[i]);
+            var el = els[i];
 
-            link = els[i].querySelector('input[type=hidden]').value.split(',');
-            title = els[i].querySelector(c.title_class).textContent;
+            link = el.querySelector('input[type=hidden]').value.split(',');
+            title = el.querySelector(c.title_class + ' .title').textContent;
 
             this.data = {
                 'id': c.id,
                 'link': link[0],
-                'title': title
+                'title': title.replace('.','')
             };
 
             tpl = this.parseTemplate(this.data, t.save_link);
             input = this.parseTemplate(this.data, t.listItem);
-            
-            el.find(c.wrap_class).after(tpl);
-            el.find(c.wrap_class).after(input);
+            point = el.querySelector(c.wrap_class);
 
+            this.domAction.insertAfter('<span>' + tpl + input + '</span>', point);
         }
     };
     /*
@@ -206,7 +236,18 @@ var Audio = function () {
     */
     this.domAction = {
         insertAfter: function (el, afterEl) {
+            //Если в качестве первого параметра переданна строка html то создаем елемент сами
+            if (typeof el === "string") {
+                el = A.domAction.createEl(el);
+            }
+            var parent = afterEl.parentNode,
+                next = afterEl.nextSibling;
 
+            if (next && !next instanceof Text) {
+                return next.insertBefore(el, next);
+            } else {//Если следующего элемента нет то вставляем наш в самый конец
+                return parent.appendChild(el);
+            }
         },
         createEl: function (html) {
             var div = d.createElement('div');
@@ -214,6 +255,36 @@ var Audio = function () {
             var el = div.childNodes[0];
             div.removeChild(el);
             return el;
+        },
+        addClass: function (el, cls) {
+            var classes = '',
+                classesAr, ln = el.length;
+
+            if (typeof el === "string") {
+                el = d.querySelectorAll(el);
+                ln = el.length;
+            }
+
+            if (ln) {
+                while (ln--) {
+                    var loc = el[ln];
+                    loc.className += ' ' + cls;
+                }
+            } else {
+                el.className += ' ' + cls;
+            }
+        },
+        hasClass: function (el, cls) {
+            var classes = el.className.split(" "),
+                ln = classes.length;
+
+            while (ln--) {
+                var loc = classes[ln];
+                if (loc === cls) {
+                    return true;
+                    break;
+                }
+            }
         }
     };
 

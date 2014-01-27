@@ -1,14 +1,10 @@
 {
 	"manifest_version": 2,
-	"version": "2.0.2",
+	"version": "2.1.2",
 	"name":"Wool Saver",
 	"author":"Abaddon",
 	"description":"Позовляет скачивать музыку в контакте. Так же имеется возможность переменовать композицию перед скачиванием.",
-	
-	"browser_action": {
-		"default_icon":"img/ikon.png",
-		"default_title":"Работает шерсть!"
-	},
+
 	"icons": {
     	"48":"img/ikon_48.png",
     	"128":"img/ikon_128.png"
@@ -28,6 +24,6 @@
 	"content_scripts": [{
 		"matches":["http://vk.com/*"], 
 		"css":["css/style.css"],
-		"js":["js/libs/jquery-2.0.3.js","js/base.js"]
+		"js":["js/base.js"]
 	}]
 }
