@@ -14,6 +14,11 @@
         "http://vk.com/*"
 	],
 
+    "browser_action": {
+		"default_icon":"img/ikon.png",
+		"default_title":"Работает шерсть!"
+	},
+
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	
 	"web_accessible_resources":[
